@@ -16,11 +16,11 @@
 classdef simulationClass<handle 
     properties (Access = protected)
         version             = 'Version 1.0'                                % WEC-Sim version                  
-        outputDir           = 'output'                                     % Data output directory name
         time                = 0                                            % Simulation time [s] (default = 0 s)
     end
     
     properties (Access = public)
+                outputDir           = 'output'                                     % Data output directory name
         numWecBodies        = [] % make these dependent variables                                % Number of hydrodynamic bodies that comprise the WEC device (default = 'NOT DEFINED') 
         numPtos             = []                                            % Number of power take-off elements in the model (default = 'NOT DEFINED') 
         numConstraints      = []                                            % Number of contraints in the wec model (default = 'NOT DEFINED')
@@ -47,6 +47,8 @@ classdef simulationClass<handle
         numRampT            = []        
         rho                 = []                                           % Density of water (default = 1000 kg/m^3)
         g                   = []                                           % Acceleration due to gravity (default = 9.81 m/s)
+        figDir = 'figs'    % directory for figures
+        resDir = 'res'   % directory for time series from batch simulations
     end
     
     properties (Dependent)
@@ -55,18 +57,20 @@ classdef simulationClass<handle
         logFile                                                            % File with run information summary
         caseFile                                                           % .mat file with all simulation information
         outputFileName
-        CIkt                                                               % Number of timesteps in the convolution integral length                                                             
+        CIkt                                                               % Number of timesteps in the convolution integral length
     end
     
     methods
      
-        function obj = simulationClass(file)
-             if nargin >= 1
-                 obj.inputFile = file; % Function to change the name of the input file if desired (not reccomended)
-             end
-             if exist(obj.inputFile,'file') ~= 2
-                 error('The input file %s does not exist in the directory %s',file,pwd)
-             end
+        function obj = simulationClass(varargin)
+            
+            if nargin >= 1
+                obj.inputFile = varargin{1}; %file; % Function to change the name of the input file if desired (not reccomended)
+                
+                if exist(obj.inputFile,'file') ~= 2
+                    error('The input file %s does not exist in the directory %s',file,pwd)
+                end
+            end
              fprintf(['WEC-Sim: An open-source code for simulating '...
                       'wave energy converters\n'])
              fprintf('Version: %s\n\n',obj.version)
@@ -77,19 +81,22 @@ classdef simulationClass<handle
 
              obj.time = [obj.startTime:obj.dt:obj.endTime];
              
+             odr =  obj.outputDir;
              obj.outputDir = ['.' filesep obj.outputDir];
+             obj.figDir = ['.' filesep odr filesep obj.figDir];
+             obj.resDir = ['.' filesep odr filesep obj.resDir];
 
              % Create the output directory. If the dir exists it will be
              % moved to the directory "output_previous"
              if exist(obj.outputDir,'dir') == 0
                 mkdir(obj.outputDir)
              else
-                try
-                    rmdir(obj.outputDir,'s')
-                catch
-                    error('The output directory could not be removed. Please close any files in the output directory and try running WEC-Sim again')
-                end
-                mkdir(obj.outputDir)
+%                 try
+%                     rmdir(obj.outputDir,'s')
+%                 catch
+%                     error('The output directory could not be removed. Please close any files in the output directory and try running WEC-Sim again')
+%                 end
+%                 mkdir(obj.outputDir)
              end
         end
         

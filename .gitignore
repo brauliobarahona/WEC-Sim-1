@@ -48,9 +48,13 @@ view_html.sh
 *.synctex.gz(busy)
 *.toc
 *.zip
+*.pdf
+*.h5
 
 .DS_Store
 
 */output/
 */output_previous/
 */slprj/
+*/applications/OPT/F3/geometry/
+*/applications/OPT/F3/hydroData/
