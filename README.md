@@ -17,5 +17,5 @@ A collection of sea state occurrence data for Humboldt bay site found in the lit
 + Batch scripts
 
 + Post-processing scripts
-++ Gathering of simulation output run in batch for different sea states, damping of power take-off system, and incident wave phase
-++ Rainflow counting using [this Matlab Central code](http://www.mathworks.com/matlabcentral/fileexchange/3026-rainflow-counting-algorithm).
+  + Gathering of simulation output run in batch for different sea states, damping of power take-off system, and incident wave phase
+  + Rainflow counting using [this Matlab Central code](http://www.mathworks.com/matlabcentral/fileexchange/3026-rainflow-counting-algorithm).
