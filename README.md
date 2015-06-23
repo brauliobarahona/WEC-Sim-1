@@ -1,12 +1,7 @@
 ## WEC-Sim
 Dynamics simulator of wave energy converters in Matlab/Simulink.
 
-[[wecsim.png|width=300px]]
-
-
-![wecsim](https://raw.githubusercontent.com/brauliobarahona/WEC-Sim-1/master/wecsim_smaller.png){:height = "200px"}
-
-<img src="https://raw.githubusercontent.com/brauliobarahona/WEC-Sim-1/master/wecsim_smaller.png" width="48">
+<img src="https://raw.githubusercontent.com/brauliobarahona/WEC-Sim-1/master/wecsim_smaller.png" width="100">
 
 
 [workflow]: https://raw.githubusercontent.com/brauliobarahona/WEC-Sim-1/master/loads_analysis_workflow.png "Proposed loads analysis workflow" 
