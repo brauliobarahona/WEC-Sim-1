@@ -16,7 +16,8 @@ Equations of motion of multiple bodies are handled with SimMechanics blocks, con
 A collection of sea state occurrence data for Humboldt bay site found in the literature, with the posibility of reducing the number of sea states by specifiyng period and significant wave height to interpolate a given data set.
 
 + Batch scripts
-
+  
 + Post-processing scripts
   + Gathering of simulation output run in batch for different sea states, damping of power take-off system, and incident wave phase
   + Rainflow counting using [this Matlab Central code](http://www.mathworks.com/matlabcentral/fileexchange/3026-rainflow-counting-algorithm).
+  + Basic statistics and damage equivalent loads
