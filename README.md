@@ -1,7 +1,7 @@
 ## WEC-Sim
 Dynamics simulator of wave energy converters in Matlab/Simulink.
 
-[[wecsim.png|width=300px]
+[[wecsim.png|width=300px]]
 
 
 ![alt text][wecsim]
