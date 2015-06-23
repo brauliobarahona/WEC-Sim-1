@@ -1,10 +1,8 @@
 ## WEC-Sim
-
+<a href="https://raw.githubusercontent.com/brauliobarahona/WEC-Sim-1/master/wecsim_smaller.png"><img src="https://raw.githubusercontent.com/brauliobarahona/WEC-Sim-1/master/wecsim_smaller.png" align="left" width="500"></a>
 Dynamics simulator of wave energy converters in Matlab/Simulink. WEC-Sim (Wave Energy Converter Simulator) documentation can be found [here](http://wec-sim.github.io/WEC-Sim).
 
 Equations of motion of multiple bodies are handled with SimMechanics blocks, controls can be developed with normal Simulink blocks, formulations of hydrodynamic and mooring forces on rigid bodies are included in the Simulink library. 
-
-<a href="https://raw.githubusercontent.com/brauliobarahona/WEC-Sim-1/master/wecsim_smaller.png"><img src="https://raw.githubusercontent.com/brauliobarahona/WEC-Sim-1/master/wecsim_smaller.png" align="left" width="500"></a>
 
 ## In this repository ...
 + Proposed workflow for loads analysis:
