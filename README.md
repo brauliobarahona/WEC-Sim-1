@@ -12,6 +12,7 @@ Equations of motion of multiple bodies are handled with SimMechanics blocks, con
 <a href='https://raw.githubusercontent.com/brauliobarahona/WEC-Sim-1/master/loads_analysis_workflow.png'><img src="https://raw.githubusercontent.com/brauliobarahona/WEC-Sim-1/master/loads_analysis_workflow.png" align="center" width="550"></a>
 
 + Sea state class
+
 A collection of sea state occurrence data for Humboldt bay site found in the literature, with the posibility of reducing the number of sea states by specifiyng period and significant wave height to interpolate a given data set.
 
 + Batch scripts
