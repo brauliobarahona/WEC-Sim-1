@@ -9,7 +9,7 @@ Equations of motion of multiple bodies are handled with SimMechanics blocks, con
 ## In this repository ...
 + Proposed workflow for loads analysis:
 
-<img src="https://raw.githubusercontent.com/brauliobarahona/WEC-Sim-1/master/loads_analysis_workflow.png" align="center" width="550">
+<img src="https://raw.githubusercontent.com/brauliobarahona/WEC-Sim-1/master/loads_analysis_workflow.png" align="right" width="550">
 
 + Sea state class
 + Batch scripts
