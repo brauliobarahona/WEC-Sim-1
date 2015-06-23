@@ -15,7 +15,7 @@ WEC-Sim (Wave Energy Converter Simulator) documentation can be found [here](http
 
 ## In this repository ...
 + Proposed workflow for loads analysis
-![alt text][workflow]
+![figure here][workflow]
 + Sea state class
 + Batch scripts
 + Post-processing scripts
