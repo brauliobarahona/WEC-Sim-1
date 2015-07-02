@@ -21,7 +21,11 @@ classdef waveClass<handle
         H                           = 'NOT DEFINED'                             % [m] Wave height (regular waves) or significant wave height (irregular waves) (default = 1)
         noWaveHydrodynamicCoeffT    = 'NOT DEFINED'                             % Period of BEM simulation used to determine hydrodynamic coefficients for simulations with no wave. This option is only used with the 'noWave' wave type.
         spectrumType                = 'NOT DEFINED'                             % Type of wave spectrum. Only PM, BS, JS, and Imported spectrum are supported.
-        randPreDefined              = 0;                                        % Only used for irregular waves. Default is equal to 0; if it equals to 1, the waves pahse is pre-defined
+        randPreDefined              = 0;                                        % Only used for irregular waves, it controls the random number generator seed
+                                                                                %  - Default is 0, uses default rng settings (i.e., seed = 0)
+                                                                                %  - Set to a positive integer to set the seed to that value
+                                                                                %  - Set to -1 to use the 'shuffle' option in rng
+                                                                                %
         spectrumDataFile            = 'NOT DEFINED'                             % Data file that contains the spectrum data file. See ---- for format specs        
         numFreq                     = 1001                                      % Number of interpolated wave frequencies (default = 'NOT DEFINED') 
     end
@@ -98,7 +102,7 @@ classdef waveClass<handle
                     fprintf('\tWave Height H (m)                    = %G\n',obj.H)                    
                     fprintf('\tWave Period T (sec)                  = %G\n',obj.T)                    
                 case 'irregular'
-                    if obj.randPreDefined == 0
+                    if obj.randPreDefined <= 0
                        fprintf('\tWave Type                            = Irregular Waves (Arbitrary Random Phase)\n')                    
                     else
                        fprintf('\tWave Type                            = Irregular Waves (Predefined Random Phase)\n')                    
@@ -107,7 +111,7 @@ classdef waveClass<handle
                     fprintf('\tSignificant Wave Height Hs (m)       = %G\n',obj.H)                    
                     fprintf('\tPeak Wave Period Tp (sec)            = %G\n',obj.T)                         
                 case 'irregularImport'
-                    if obj.randPreDefined == 0
+                    if obj.randPreDefined <= 0
                        fprintf('\tWave Type                            = Irregular Waves (Arbitrary Random Phase)\n')                    
                     else
                        fprintf('\tWave Type                            = Irregular Waves (Predefined Random Phase)\n')                    
@@ -121,9 +125,16 @@ classdef waveClass<handle
         function setWavePhase(obj)                                     
         % Used by waveSetup
         % Sets the irregular wave's random phase
-            if obj.randPreDefined ~= 0
+            if obj.randPreDefined >= 0
                rng(obj.randPreDefined);    
+               
+            elseif obj.randPreDefined == -1
+               rng('shuffle')
+            % (!) elseif obj.randPreDefined == 0, will keep the default
+            % value, see help rng, which is sets the seed number to 0 and
+            % uses 'twister' type random generator
             end
+            
             obj.phaseRand = 2*pi*rand(1,obj.numFreq);
             obj.phaseRand = obj.phaseRand';
         end
