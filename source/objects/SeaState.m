@@ -137,7 +137,7 @@ classdef SeaState
         % Operations:
 
         function JDPred = interpolate(sstt, Xq, Yq)
-        %  >interpolate to reduce the number of sea states, trying to keep
+        %  Interpolate to reduce the number of sea states, trying to keep
         %  the total occurrence close to 100%, i.e. sum(sum(JDP)) == 100
             % example:
             % Xq -> Te = [4.5: 12.5, 14, 15, 17, 18]
@@ -157,9 +157,9 @@ classdef SeaState
             % (!) TODO: display warinigns of previous trick
             JDPred = datint;
         end
-        function varargout = set4loop(sstt, varargin) %re-arrange data for easier 'looping',
-                                       %discard values with zero ocurrence
-                                       %or below a given threshold
+        function varargout = set4loop(sstt, varargin)
+            % Re-arrange data for easier 'looping', discard values with zero
+            % ocurrence or below a given threshold
             if nargin == 2; %set threshold
                 thr = varargin{1};
             else
@@ -193,15 +193,21 @@ classdef SeaState
         
         % Plot stuff
         function varargout = plot(sstt, pltflg)
+            % Plot sea state percentage of occurrence, set pltflg = 'surf' 
+            % to plot with surf command
+            % 
+            Lbls{1} = 'Sea state at Humbolt from buoy measurements'; % make this a variable
+            Lbls{2} = 'T_p [s]';
+            Lbls{3} = 'H_s [m]';
+            Lbls{4} =  'Occurrence [%]';          
+            fhnd =figure('name', Lbls{1});
+            
             if strcmpi(pltflg, 'mesh')
-                figure
                 plthnd = mesh(sstt.Te, sstt.Hs, sstt.JDP);
-                view(0, 90)
+                
             elseif strcmpi(pltflg, 'surf')
                 % (2) surface
-                figure
                 plthnd = surf(sstt.Te, sstt.Hs, sstt.JDP);
-                view(0, 90)
                 
                 % TODO: ... other:
                 % (3) matrix
@@ -209,17 +215,79 @@ classdef SeaState
                 %hold on;
                 %plot(sstt.Te_red(1), sstt.Hs_red(1,:), '*k')
             end
+            %set color bar and view
+            hcb = colorbar; axis tight; view(0,90)
+            
+            %legends
+            xlabel( Lbls{2} ); ylabel( Lbls{3} ); hcb.Label.String = Lbls{4};
             % TODO: pimp the plots
             %
-            varargout = plthnd;
+            varargout = {fhnd, plthnd, hcb};
         end
         
+        function varargout = post_plot(sstt, x, y, z, varargin)
+            % plot the inputs x, y, z in a 3D surface; get the plot handles
+            % as output in the following order: figure, axes, plot
+            
+            %TODO: set style (i.e., Font, Fontsize)
+            Lbls = varargin{1};
+            
+            %set figure up
+            f = figure('name', Lbls{1});
+            ax = axes('parent', f);
+            
+            % plot
+            pltH = surf(x, y, z);
+            
+            %set color bar and view
+            hcb = colorbar; axis tight; view(0,90)
+            
+            %legends
+            xlabel( Lbls{2} ); ylabel( Lbls{3} ); hcb.Label.String = Lbls{4};
+            
+            %TODO: set fontsize
+            
+            % output handles
+            varargout = {f, ax, pltH};
+            
+        end
+        function varargout = post_scatter(sstt, x, y, varargin)
+            % scatter plot the inputs x, y, z; get the plot handles
+            % as output in the following order: figure, axes, plot
+
+                        %TODO: set style (i.e., Font, Fontsize)
+            if isempty(varargin) == 0
+                Lbls = varargin{1};
+            else
+                Lbls = {'', '', '', ''};
+            end
+            
+            %TODO: check that x and y have same size
+            [m n] = size(x);
+            
+            %set figure up
+            f = figure('name', Lbls{1});
+            ax = axes('parent', f);
+
+            
+            % plot
+            for ii= 1: n;                
+                pltH(ii) = scatter(ax, x(:,ii), y(:,ii), 'co'); hold on;
+            end
+
+            %legends
+            xlabel( Lbls{2} ); ylabel( Lbls{3} ); hcb.Label.String = Lbls{4};
+            
+            %TODO: set fontsize
+            
+            % output handles
+            varargout = {f, ax, pltH};
+        end
     end
 end
 
-% Other thigns TODO:
+% Other things TODO:
 %
 %  >load coefficients from X
 %  >plot Sea State matrix
 %  >plot Power matrix
-%  >Arrange in arrays for plotting and 'looping'
