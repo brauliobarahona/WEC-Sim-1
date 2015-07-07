@@ -1,7 +1,18 @@
-% Post-processing routine from WecSim source modified to save just
-% selected variables, reducing storage size
+% Post-processing routine from WecSim source with minimal modifications, to
+% save just selected variables and added comments.
+% 
+% (!) Note: it is possible to reduce storage size quite a bit, and perhaps
+% that will proof useful for wave energy converter dynamics analysis. For
+% example, for the case of a two body system fixed to the ground and with one 
+% PTO system, saving the work space (i.e., 'caseFile') has an overhead of
+% about 4 MB compared to simply saving 'output'. However, this overhead
+% sould not change much when changing the model (i.e., increasing the
+% number of bodies).
+% 
+% Moreover, the PTO output seems to be about 15% of the memory required to
+% save the bodies and PTO output (i.e., 'output').
 %
-% Brsulio Barahona
+% braulio barahona
 
 % Re-arrange data save by Simulink model
 % *basically it re-groups the outputs of each structure saved during the
@@ -62,3 +73,5 @@ ptoout = output.ptos;
 save([simu.resDir '\' fn{jj} '.mat'], 'ptoout')
 % %save workspace to *.mat file
 % save(simu.caseFile)
+
+%TODO: make the selection of the data to save more flexible

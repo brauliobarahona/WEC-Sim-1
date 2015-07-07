@@ -1,8 +1,6 @@
 % Script to set up optimal damping coefficients of PTO for float 1 and
 % float 3, as estimated by Jennifer. The corresponding sea states are also
 % setup using SeaState class
-%
-% Braulio Barahona
 
 % data from Jennifer's spread sheet 
 % * optimal values of PTO damping, considering the PTO to be a linear spring

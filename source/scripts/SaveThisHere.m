@@ -1,7 +1,7 @@
 % Script to set up file names on the basis of the simulation parameters
 % that were used.
 %
-% Braulio Barahona
+% braulio barahona
 %
 
 % save the results here

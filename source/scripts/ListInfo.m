@@ -1,4 +1,4 @@
-% script to output to simulation settings to Command Window
+% From WEC-Sim sourcer, script to output to simulation settings to Command Window
 % 
 
 simu.listInfo(waves.typeNum);
