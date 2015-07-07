@@ -1,7 +1,7 @@
 %% Simulation Data
 simu = simulationClass();               %Create the Simulation Variable
 simu.simMechanicsFile = 'RM3.slx';      %Location of Simulink Model File
-simu.endTime=400;                       %Simulation End Time [s]
+simu.endTime=1;                       %Simulation End Time [s]
 simu.dt = 0.1;                          %Simulation Time-Step [s]
 simu.rampT = 100;                       %Wave Ramp Time Length [s]
 

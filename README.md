@@ -21,3 +21,13 @@ A collection of sea state occurrence data for Humboldt bay site found in the lit
   + Gathering of simulation output run in batch for different sea states, damping of power take-off system, and incident wave phase
   + Rainflow counting using [this Matlab Central code](http://www.mathworks.com/matlabcentral/fileexchange/3026-rainflow-counting-algorithm).
   + Basic statistics and damage equivalent loads
+
+## How to ?
++ Download/clone the repository
++ Run `wecSim_RunHere.m` from the folder `WEC-Sim-1\applications\RM3`
+  + Alternatively, check out the oficial documentation and do the *installation*, the point is just that you make sure things are running before proceeding to run the batch simulations
++ Setup `wecSim_RunHere_bat.m` and run it
++ Post-process
+
+  
+  
