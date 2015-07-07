@@ -102,18 +102,22 @@ classdef waveClass<handle
                     fprintf('\tWave Height H (m)                    = %G\n',obj.H)                    
                     fprintf('\tWave Period T (sec)                  = %G\n',obj.T)                    
                 case 'irregular'
-                    if obj.randPreDefined <= 0
+                    if obj.randPreDefined == 0
                        fprintf('\tWave Type                            = Irregular Waves (Arbitrary Random Phase)\n')                    
-                    else
+                    elseif obj.randPreDefined == -1
+                       fprintf('\tWave Type                            = Irregular Waves (Random Phase)\n')                                            
+                    elseif obj.randPreDefined >= 0
                        fprintf('\tWave Type                            = Irregular Waves (Predefined Random Phase)\n')                    
                     end
                     obj.printWaveSpectrumType;   
                     fprintf('\tSignificant Wave Height Hs (m)       = %G\n',obj.H)                    
                     fprintf('\tPeak Wave Period Tp (sec)            = %G\n',obj.T)                         
                 case 'irregularImport'
-                    if obj.randPreDefined <= 0
+                    if obj.randPreDefined == 0    % (!) Note: not sure how the phase of the imported irregular waves is adjusted
                        fprintf('\tWave Type                            = Irregular Waves (Arbitrary Random Phase)\n')                    
-                    else
+                    elseif obj.randPreDefined == -1
+                        warning(' This combination of wave import and random number generator have not been tested' )
+                    elseif obj.randPreDefined >= 0
                        fprintf('\tWave Type                            = Irregular Waves (Predefined Random Phase)\n')                    
                     end
                     obj.printWaveSpectrumType;
