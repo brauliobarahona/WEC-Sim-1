@@ -59,6 +59,6 @@ pto(1).c=1200000;    % PTO Damping [N/(m/s)]
 
 %% batch and output-related variables
 % Sea state /  waves
-seastatename='humboldtBuoy';
+seastatename='humboldtRed';
 %   
-fnprefix = 'test'; 
+fnprefix = 'FirstTimeTest'; 

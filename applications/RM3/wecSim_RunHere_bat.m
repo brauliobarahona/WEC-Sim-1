@@ -178,6 +178,6 @@ end % end of loop
 % (i.e., setting JJ0 to a value different than 1) Hs, Tp, will not reflect
 % that. Use the check4files script to set Hs, Tp for 3D plotting
 %
-resDir = simu.resDir;
+resDir = [simu.resDir '\'];
 save([fnprefix, 'filenames'], 'fn', 'Hs', 'Tp', 'Cpto', 'resDir', ...
                               'seastatename')
