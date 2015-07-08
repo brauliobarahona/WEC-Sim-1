@@ -34,7 +34,7 @@ A collection of sea state occurrence data for Humboldt bay site found in the lit
   + If you are not already there, navigate to `WEC-Sim-1\applications\RM3` and run `wecSim_RunHere_bat.m`
     + If things went fine, after several minutes you will find `FirstTimeTestfilenames.mat` in the current folder
   + To test the post-processing script:
-    + Get [this repository for Rainflow counting](http://www.mathworks.com/matlabcentral/fileexchange/3026-rainflow-counting-algorithm) or use your own replacing `sig2ext.m` and `rainflow.m` in `WEC-Sim-1\source\scripts\post_processingV0_template.m`
+    + Get [this repository for Rainflow counting](http://www.mathworks.com/matlabcentral/fileexchange/3026-rainflow-counting-algorithm) or use your own replacing `sig2ext.m` and `rainflow.m` in the post-processing script
     + Remember where you put the Rainflow repository, you will need this in your path, in my case I put it under `Documents\Matlab\work\Fatigue`
     + Run `post_processingV0_FirstTimeTest.m`, it will prompt you to input the path ... the it will give you a couple of plots
 
