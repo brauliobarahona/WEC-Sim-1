@@ -36,7 +36,7 @@ A collection of sea state occurrence data for Humboldt bay site found in the lit
   + To test the post-processing script:
     + Get [this repository for Rainflow counting](http://www.mathworks.com/matlabcentral/fileexchange/3026-rainflow-counting-algorithm) or use your own replacing `sig2ext.m` and `rainflow.m` in the post-processing script
     + Remember where you put the Rainflow repository, you will need this in your path, in my case I put it under `Documents\Matlab\work\Fatigue`
-    + Run `post_processingV0_FirstTimeTest.m`, it will prompt you to input the path ... then it will give you a couple of plots
+    + Run `post_processingV0_FirstTimeTest.m`, it will prompt you to input the previous path (i.e., `Documents\Matlab\work\Fatigue`) ... then it will give you a couple of plots
 
 
   
