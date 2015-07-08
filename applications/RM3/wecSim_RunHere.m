@@ -4,10 +4,9 @@
 %
 close all; clear all;
 %% Add WecSim directories to the path
-if exist('simulationClass.m') == 0
   % (!) this is a relative path, you may want to change it to an absolute path
   addpath(genpath('..\..\source'))
-end
+  %
 
 %% Start WEC-Sim log
 %bdclose('all');
