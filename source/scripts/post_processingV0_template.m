@@ -3,13 +3,25 @@
 %   "..._filenames.mat"
 % - Rainflow counts are done with the algorithm found in:
 %   http://www.mathworks.com/matlabcentral/fileexchange/3026-rainflow-counting-algorithm
-% 
-% (!) before post processing run the script check4files
 %
 clear all; clc;
-% Add fatigue and WecSim directories to the pathsea
-addpath(genpath('C:\Users\bbarahon\Documents\MATLAB\work\Fatigue'))
-addpath(genpath('C:\Users\bbarahon\Documents\GitHub\WEC-Sim-1'))
+% Prompt user to add Rainflow repository to the path
+while exist('rainflow.m', 'file') == 0
+    HereIsRainflowRepo = input('Where did you put the Rainflow Repo? >> ', 's');
+    % (!) Example: c\Documents\Fatigue 
+    addpath( genpath(HereIsRainflowRepo) );
+    
+    if exist('rainflow.m', 'file') == 2
+        break
+    end
+    warning('Try again is that the right folder ?')
+end
+
+% Add WecSim directories to the path
+if exist('simulationClass.m') == 0
+  % (!) this is a relative path, you may want to change it to an absolute path
+  addpath(genpath('..\..\source'))
+end
 
 % Set up parameters for post-processing
 tMAX = 3600;    % +++ Set time for analysis (s)

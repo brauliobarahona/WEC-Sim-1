@@ -3,8 +3,11 @@
 % path
 %
 close all; clear all;
-%% add to path
-addpath(genpath('C:\Users\bbarahon\Documents\GitHub\WEC-Sim-1\source'))
+%% Add WecSim directories to the path
+if exist('simulationClass.m') == 0
+  % (!) this is a relative path, you may want to change it to an absolute path
+  addpath(genpath('..\..\source'))
+end
 
 %% Start WEC-Sim log
 %bdclose('all');
