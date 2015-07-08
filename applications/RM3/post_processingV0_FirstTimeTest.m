@@ -24,7 +24,7 @@ if exist('simulationClass.m') == 0
 end
 
 %% Set up parameters for post-processing
-tMAX = 3600;    % +++ Set time for analysis (s)
+tMAX = 0.1;    % +++ Set time for analysis (s)
 
 % Setup stuff for damage eq. loads
 iWohler = 1;    % +++ Select a Wohler exponent, mm( iWholer )
@@ -36,17 +36,13 @@ Neq = 600; % +++ Set equivalent number of cycles
 % (1) Load file names and loop parameters
 %       (!) run_name is the *.mat file name containing parameters of a given
 %           batch run, it also includes the WecSim out file names
-run_name = {'... name of batch run: contains output file names ...'};  % +++
+run_name = {'FirstTimeTestfilenames.mat'};  % +++
         
-% (!) reset location of output files: "resDir"
+% (!) reset location of output files: "resDir", if necessary
 %resDir = 'E:\wecSim\res\';
 
 % (!?) need to know Sea State matrix
-if exist('seastatename','var') == 0
-   load(run_name{1})   % just load one of the batch files, all of them should
-                       % have been run with the same setting
-end
-sea = SeaState('humboldtBuoy');   % +++
+sea = SeaState(seastatename);   % +++
 
 cEx99 =[];    % for each output file of each batch: extreme values, 
 tempT = [];   %                                     wave periods,
