@@ -23,14 +23,14 @@ A collection of sea state occurrence data for Humboldt bay site found in the lit
   + Basic statistics and damage equivalent loads
 
 ## How to ?
-+ Download/clone this repository,
-+ First things, first check that WEC-Sim runs
++ Download/clone this repository
++ First things, first check that WEC-Sim runs:
   + Run `wecSim_RunHere.m` from the folder `WEC-Sim-1\applications\RM3` or, 
-  + Alternatively, check out the oficial documentation and do the *installation*, the point is just that you make sure things are running before proceeding to run the batch simulations
-+ Now, let's check that the batch setup works: navigate to `WEC-Sim-1\applications\RM3` and run `wecSim_RunHere_bat.m`
-  + (!) if this did not run verify that the path was added correctly: `` works on my Windows machine, it should work on yours
+  + Check out the oficial documentation and do the *installation*, the point is just that you make sure things are running before proceeding to run the batch simulations
++ Now, let's check that the batch setup works: if you are not already there, navigate to `WEC-Sim-1\applications\RM3` and run `wecSim_RunHere_bat.m`
+  + (!) if this did not run verify that the path was added correctly: `addpath( genpath('..\..\source') )` works on my Windows machine, it should work on yours
 + To test the post-processing script:
-  + Get [this repository for Rainflow counting]((http://www.mathworks.com/matlabcentral/fileexchange/3026-rainflow-counting-algorithm)) or use your own replacing `sig2ext.m` and `rainflow.m`
+  + Get [this repository for Rainflow counting](http://www.mathworks.com/matlabcentral/fileexchange/3026-rainflow-counting-algorithm) or use your own replacing `sig2ext.m` and `rainflow.m`
   + Make sure the Rainflow repository is in your path, in my case I put it under `... Documents\Matlab\work\Fatigue`, 
 + Setup the model (`wecSimInputFile_batch_INIT.m`) and the batch run (`wecSim_RunHere_bat.m`) ... and run it
 
