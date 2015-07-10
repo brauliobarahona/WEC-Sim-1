@@ -142,9 +142,12 @@ classdef SeaState
         function JDPred = interpolate(sstt, Xq, Yq)
         %  Interpolate to reduce the number of sea states, trying to keep
         %  the total occurrence close to 100%, i.e. sum(sum(JDP)) == 100
-            % example:
+        %
+        %  (!) TODO: let the inputs have different sizes
+            % Example:
             % Xq -> Te = [4.5: 12.5, 14, 15, 17, 18]
             % Yq -> Hs = [0.25: 0.5: 3.75, 4.5, 5.5, 6.5] 
+            % Note Te, Hs have to be the same size :/
             datint = interp2(sstt.Te, sstt.Hs, sstt.JDP, Xq, Yq);
             
             k=0;
@@ -158,8 +161,22 @@ classdef SeaState
                 end
             end
             % (!) TODO: display warinigns of previous trick
+            
             JDPred = datint;
+            
+            % TODO: make this field keep the value
+            sstt.JDPred = JDPred;
         end
+        
+        function JDPref = refine(sstt, VK)
+            % refine the grid by interpolating
+            %
+            % TODO: a bit useless at the moment without the corresponding
+            % period and significant height
+            %
+            JDPref = interp2(sstt.JDP, VK);
+        end
+        
         function varargout = set4loop(sstt, varargin)
             % Re-arrange data for easier 'looping', discard values with zero
             % ocurrence or below a given threshold
@@ -195,7 +212,7 @@ classdef SeaState
         end
         
         % Plot stuff
-        function varargout = plot(sstt, pltflg)
+        function varargout = plot(sstt, pltflg, varargin)
             % Plot sea state percentage of occurrence, set pltflg = 'surf' 
             % to plot with surf command
             % 
@@ -205,12 +222,25 @@ classdef SeaState
             Lbls{4} =  'Occurrence [%]';          
             fhnd =figure('name', Lbls{1});
             
+            % here arrange inputs
+            if nargin == 5
+                pltX = varargin{1};
+                pltY = varargin{2};
+                pltZ = varargin{3};                
+            elseif nargin == 2
+                pltX = sstt.Te;
+                pltY = sstt.Hs;
+                pltZ = sstt.JDP;
+            else
+                error('wrong number of inputs')
+            end
+            
             if strcmpi(pltflg, 'mesh')
-                plthnd = mesh(sstt.Te, sstt.Hs, sstt.JDP);
+                plthnd = mesh(pltX, pltY, pltZ);
                 
             elseif strcmpi(pltflg, 'surf')
                 % (2) surface
-                plthnd = surf(sstt.Te, sstt.Hs, sstt.JDP);
+                plthnd = surf(pltX, pltY, pltZ);
                 
                 % TODO: ... other:
                 % (3) matrix
@@ -248,7 +278,7 @@ classdef SeaState
             %legends
             xlabel( Lbls{2} ); ylabel( Lbls{3} ); hcb.Label.String = Lbls{4};
             
-            %TODO: set fontsize
+            % TODO: set fontsize, at this point this is done from outside
             
             % output handles
             varargout = {f, ax, pltH};
