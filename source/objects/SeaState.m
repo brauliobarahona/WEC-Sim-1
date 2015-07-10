@@ -12,6 +12,7 @@
 
 classdef SeaState   
     properties
+        name   % name of sea state data set
         Hs         % Significant height [m]: average of 1/3 highest waves
         Te         % Energy period [s]
         Ta         % Average period [s], Ta = 0.711*Tp
@@ -31,7 +32,9 @@ classdef SeaState
     end
     methods
         function sstt = SeaState(varargin)% class constructor sets data in object
+            % TODO: arrange and augment the variable argument input
             if nargin == 1
+                sstt.name = varargin{1};
                % here different predefined data sets, given in the form of
                % a Table with rows from low to high Te, and columns from
                % low Hs at the top to high Hs at the bottom.
@@ -196,7 +199,7 @@ classdef SeaState
             % Plot sea state percentage of occurrence, set pltflg = 'surf' 
             % to plot with surf command
             % 
-            Lbls{1} = 'Sea state at Humbolt from buoy measurements'; % make this a variable
+            Lbls{1} = sstt.name; % make this a variable
             Lbls{2} = 'T_p [s]';
             Lbls{3} = 'H_s [m]';
             Lbls{4} =  'Occurrence [%]';          
