@@ -3,7 +3,7 @@
 % (!) make sure path has WEC-Sim path in
 %
 close all
-FS = 14;
+FS = 18;
 % instanciate class
 seaModel = SeaState('humboldtModel');
 seaBuoy = SeaState('humboldtBuoy');
@@ -29,8 +29,8 @@ set(gca, 'fontsize', FS); set(fN, 'Name', 'RedHumboldt')
 
 % print figures
 dirFig = 'C:\Users\bbarahon\Documents\Wave\OPT\docs\Report\files\figs\';
-%fgHnd = [fsea1, fsea2, fN];
-fgHnd = fN;
+fgHnd = [fsea1, fsea2, fN];
+%fgHnd = fN;
 
 for oo = 1:length(fgHnd)
     print(fgHnd(oo), '-djpeg100', [dirFig fgHnd(oo).Name]);
