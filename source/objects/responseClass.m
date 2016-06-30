@@ -168,7 +168,10 @@ classdef responseClass<handle
                 t,FMV,...
                 t,FLD)
             legend('forceTotal','forceExcitation','forceRadiationDamping','forceAddedMass','forceRestoring','forceViscous','forceLinearDamping')
+<<<<<<< HEAD
 >>>>>>> 767ef06048d34a6540e35f640a91bfddeab5931d
+=======
+>>>>>>> upstream/master
             xlabel('Time (s)')
             ylabel('Force(N) or Torque (N*m)')
             title(['body' num2str(bodyNum) ' (' obj.bodies(bodyNum).name ') ' DOF{comp} '  Forces'])

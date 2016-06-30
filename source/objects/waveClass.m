@@ -15,6 +15,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 classdef waveClass<handle  
     properties (SetAccess = 'public', GetAccess = 'public')%input file 
         type                        = 'NOT DEFINED'                             % Wave type. Options for this varaibale are 'noWave' (no waves), 'regular' (regular waves), 'regularCIC' (regular waves using convolution integral to calculate radiation effects), 'irregular' (irregular waves), 'irregularPRE' (irregular waves with pre defined phase). The default is 'regular'.
@@ -30,6 +31,8 @@ classdef waveClass<handle
         spectrumDataFile            = 'NOT DEFINED'                             % Data file that contains the spectrum data file. See ---- for format specs        
         numFreq                     = 1001                                      % Number of interpolated wave frequencies (default = 'NOT DEFINED') 
 =======
+=======
+>>>>>>> upstream/master
 classdef waveClass<handle
     properties (SetAccess = 'public', GetAccess = 'public')%input file
         type                        = 'NOT DEFINED'                        % Wave type. Options for this varaibale are 'noWave' (no waves), 'regular' (regular waves), 'regularCIC' (regular waves using convolution integral to calculate radiation effects), 'irregular' (irregular waves), 'irregularPRE' (irregular waves with pre defined phase). The default is 'regular'.
@@ -46,7 +49,10 @@ classdef waveClass<handle
                                              'numPointsX', 50, ...              % Visualization number of points in x direction.
                                              'numPointsY', 50)                  % Visualization number of points in y direction.
         statisticsDataLoad          = [];                                  % File name to load wave statistics data
+<<<<<<< HEAD
 >>>>>>> 767ef06048d34a6540e35f640a91bfddeab5931d
+=======
+>>>>>>> upstream/master
     end
     
     properties (SetAccess = 'private', GetAccess = 'public')%internal
@@ -146,6 +152,7 @@ classdef waveClass<handle
                 case 'irregular'
                     if obj.randPreDefined == 0
 <<<<<<< HEAD
+<<<<<<< HEAD
                        fprintf('\tWave Type                            = Irregular Waves (Arbitrary Random Phase)\n')                    
                     elseif obj.randPreDefined == -1
                        fprintf('\tWave Type                            = Irregular Waves (Random Phase)\n')                                            
@@ -156,11 +163,17 @@ classdef waveClass<handle
                     else
                         fprintf('\tWave Type                            = Irregular Waves (Predefined Random Phase)\n')
 >>>>>>> 767ef06048d34a6540e35f640a91bfddeab5931d
+=======
+                        fprintf('\tWave Type                            = Irregular Waves (Arbitrary Random Phase)\n')
+                    else
+                        fprintf('\tWave Type                            = Irregular Waves (Predefined Random Phase)\n')
+>>>>>>> upstream/master
                     end
                     obj.printWaveSpectrumType;
                     fprintf('\tSignificant Wave Height Hs (m)       = %G\n',obj.H)
                     fprintf('\tPeak Wave Period Tp (sec)            = %G\n',obj.T)
                 case 'irregularImport'
+<<<<<<< HEAD
 <<<<<<< HEAD
                     if obj.randPreDefined == 0    % (!) Note: not sure how the phase of the imported irregular waves is adjusted
                        fprintf('\tWave Type                            = Irregular Waves (Arbitrary Random Phase)\n')                    
@@ -169,17 +182,146 @@ classdef waveClass<handle
                     elseif obj.randPreDefined >= 0
                        fprintf('\tWave Type                            = Irregular Waves (Predefined Random Phase)\n')                    
 =======
+=======
+>>>>>>> upstream/master
                     if obj.randPreDefined == 0
                         fprintf('\tWave Type                            = Irregular Waves (Arbitrary Random Phase)\n')
                     else
                         fprintf('\tWave Type                            = Irregular Waves (Predefined Random Phase)\n')
+<<<<<<< HEAD
 >>>>>>> 767ef06048d34a6540e35f640a91bfddeab5931d
+=======
+>>>>>>> upstream/master
                     end
                     obj.printWaveSpectrumType;
                 case 'userDefined'
                     fprintf( '\tWave Type                                = User-Defined Wave Elevation Time-Series\n')
                     fprintf(['\tWave Elevation Time-Series File          = ' obj.etaDataFile '  \n'])
+<<<<<<< HEAD
             end
+        end
+        
+        function waveNumber(obj,g)
+            % Calculate wave number
+            obj.k = obj.w.^2./g;
+            if obj.deepWaterWave == 0
+                for i=1:100
+                    obj.k = obj.w.^2./g./tanh(obj.k.*obj.waterDepth);
+                end
+            end
+        end    
+
+        function checkinputs(obj)
+            % Check user inputs
+            % noWaveHydrodynamicCoeffT defined for noWave case
+            if strcmp(obj.type,'noWave')
+                if strcmp(obj.noWaveHydrodynamicCoeffT,'NOT DEFINED')
+                    error('The noWaveHydrodynamicCoeffT variable must be defined when using the "noWave" wave type');
+                end
+=======
+>>>>>>> upstream/master
+            end
+            % spectrumDataFile defined for irregularImport case
+            if strcmp(obj.type,'irregularImport')
+                if strcmp(obj.spectrumDataFile,'NOT DEFINED')
+                    error('The spectrumDataFile variable must be defined when using the "irregularImport" wave type');
+                end
+            end
+            % types
+            types = {'noWave', 'noWaveCIC', 'regular', 'regularCIC', 'irregular', 'irregularImport', 'userDefined'};
+            if sum(strcmp(types,obj.type)) ~= 1
+                error(['Unexpected wave environment type setting. ' ...
+                    'Only noWave, noWaveCIC, regular, regularCIC, irregular, irregularImport, and userDefined waves are supported at this time'])
+            end
+        end
+
+        function write_paraview_vtp(obj, t, numPointsX, numPointsY, domainSize, model, simdate, mooring)
+            % Write vtp files for visualization using Paraview 
+            % ground plane
+            filename = ['vtk' filesep 'ground.txt'];
+            fid = fopen(filename, 'w');
+            fprintf(fid,[num2str(domainSize) '\n']);
+            fprintf(fid,[num2str(obj.waterDepth) '\n']);
+            fprintf(fid,[num2str(mooring) '\n']);
+            fclose(fid);
+            % wave
+            x = linspace(-domainSize, domainSize, numPointsX);
+            y = linspace(-domainSize, domainSize, numPointsY);
+            [X,Y] = meshgrid(x,y);
+            lx = length(x);
+            ly = length(y);
+            numVertex = lx * ly;
+            numFace = (lx-1) * (ly-1);
+            for it = 1:length(t)
+                % open file
+                filename = ['vtk' filesep 'waves' filesep 'waves_' num2str(it) '.vtp'];
+                fid = fopen(filename, 'w');
+                % calculate wave elevation
+                switch obj.type
+                case{'noWave','noWaveCIC','userDefined'}
+                    Z = zeros(size(X));
+                case{'regular','regularCIC'}
+                    Xt = X*cos(obj.waveDir*pi/180) + Y*sin(obj.waveDir*pi/180);
+                    Z = obj.A * cos(-1 * obj.k * Xt  +  obj.w * t(it));
+                case{'irregular','irregularImport'}
+                    Z = zeros(size(X));
+                    Xt = X*cos(obj.waveDir*pi/180) + Y*sin(obj.waveDir*pi/180);
+                    for iw = 1:length(obj.w)
+                        Z = Z + sqrt(obj.A(iw)*obj.dw) * cos(-1*obj.k(iw)*Xt + obj.w(iw)*t(it) + obj.phaseRand(iw));
+                    end
+                end
+                % write header
+                fprintf(fid, '<?xml version="1.0"?>\n');
+                fprintf(fid, ['<!-- WEC-Sim Visualization using ParaView -->\n']);
+                fprintf(fid, ['<!--   model: ' model ' - ran on ' simdate ' -->\n']);
+                fprintf(fid, ['<!--   wave:  ' obj.type ' -->\n']);
+                fprintf(fid, ['<!--   time:  ' num2str(t(it)) ' -->\n']);
+                fprintf(fid, '<VTKFile type="PolyData" version="0.1">\n');
+                fprintf(fid, '  <PolyData>\n');
+                % write wave info
+                fprintf(fid,['    <Piece NumberOfPoints="' num2str(numVertex) '" NumberOfPolys="' num2str(numFace) '">\n']);
+                % write points
+                fprintf(fid,'      <Points>\n');
+                fprintf(fid,'        <DataArray type="Float32" NumberOfComponents="3" format="ascii">\n');
+                for jj = 1:length(y)
+                    for ii = 1:length(x)
+                        pt = [X(jj,ii), Y(jj,ii), Z(jj,ii)];
+                        fprintf(fid, '          %5.5f %5.5f %5.5f\n', pt);
+                    end; clear ii
+                    clear pt
+                end; clear jj
+                fprintf(fid,'        </DataArray>\n');
+                fprintf(fid,'      </Points>\n');
+                % write squares connectivity
+                fprintf(fid,'      <Polys>\n');
+                fprintf(fid,'        <DataArray type="Int32" Name="connectivity" format="ascii">\n');
+                for jj = 1:ly-1
+                    for ii = 1:lx-1
+                        p1 = (jj-1)*lx + (ii-1);
+                        p2 = p1+1;
+                        p3 = p2 + lx;
+                        p4 = p1 + lx;
+                        fprintf(fid, '          %i %i %i %i\n', [p1,p2,p3,p4]);
+                    end; clear ii
+                end; clear jj
+                fprintf(fid,'        </DataArray>\n');
+                fprintf(fid,'        <DataArray type="Int32" Name="offsets" format="ascii">\n');
+                fprintf(fid, '         ');
+                for ii = 1:numFace
+                    n = ii * 4;
+                    fprintf(fid, ' %i', n);
+                end; clear ii n
+                fprintf(fid, '\n');
+                fprintf(fid,'        </DataArray>\n');
+                fprintf(fid, '      </Polys>\n');
+                % end file
+                fprintf(fid, '    </Piece>\n');
+                fprintf(fid, '  </PolyData>\n');
+                fprintf(fid, '</VTKFile>');
+                % close file
+                fclose(fid);
+            end; clear it
+            clear  numPoints numVertex numFace x y lx ly X Y Z fid filename p1 p2 p3 p4
         end
         
         function waveNumber(obj,g)
@@ -305,6 +447,7 @@ classdef waveClass<handle
     end
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     methods (Access = 'protected')                                     
         function setWavePhase(obj)                                     
         % Used by waveSetup
@@ -318,6 +461,8 @@ classdef waveClass<handle
             % value, see help rng, which is sets the seed number to 0 and
             % uses 'twister' type random generator
 =======
+=======
+>>>>>>> upstream/master
     methods (Access = 'protected')
         function setWavePhase(obj)
             % Sets the irregular wave's random phase
@@ -326,7 +471,10 @@ classdef waveClass<handle
                rng(obj.randPreDefined); % Phase seed = 1,2,3,...,etc
             else 
                 rng('shuffle');         % Phase seed shuffled
+<<<<<<< HEAD
 >>>>>>> 767ef06048d34a6540e35f640a91bfddeab5931d
+=======
+>>>>>>> upstream/master
             end
             
             obj.phaseRand = 2*pi*rand(1,obj.numFreq);
