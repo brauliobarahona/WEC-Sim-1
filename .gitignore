@@ -21,7 +21,6 @@ view_html.sh
 *.glg
 *.glo
 *.gls
-*.h
 *.idx
 *.ilg
 *.ind
@@ -53,8 +52,14 @@ view_html.sh
 
 .DS_Store
 
+# MATLAB
 */output/
 */output_previous/
+<<<<<<< HEAD
 */slprj/
 */applications/OPT/F3/geometry/
 */applications/OPT/F3/hydroData/
+=======
+*/slprj
+*build_exception*
+>>>>>>> 767ef06048d34a6540e35f640a91bfddeab5931d

@@ -15,26 +15,33 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 classdef ptoClass<handle
-    properties                                                         
+    properties (SetAccess = 'public', GetAccess = 'public')%input file 
         name                    = 'NOT DEFINED'                                 % Name of the pto 
         k                       = 0                                             % PTO stiffness. Default = 0
         c                       = 0                                             % PTO damping. Default = 0
         loc                     = [999 999 999]                                 % PTO location. Default = [0 0 0]        
+        orientation             = struct(...                                    % Structure defining orientation parameters
+                                         'z', [0, 0, 1], ...                        % Vector defining the direction of the Z-coordinate for the PTO.
+                                         'y', [0, 1, 0], ...                        % Vector defining the direction of the Y-coordinate for the PTO.
+                                         'x', [], ...                               % Internally calculated vector defining the direction of the X-coordinate for the PTO.
+                                         'rotationMatrix',[])                       % Internally calculated rotation matrix to go form standard coordinate orientation to the PTO's coordinate orientation.
+        initDisp                = struct(...                                    % Structure defining the initial displacement
+                                         'initLinDisp',          [0 0 0])           % Initial displacement - used for decay tests (format: [displacment in m], default = [0 0 0])
     end 
     
     properties (SetAccess = 'public', GetAccess = 'public')%internal
-        ptoNum                  = []
+        ptoNum                  = []                                            % PTO number.
     end
     
     methods                                                            
         function obj = ptoClass(name)                                  
-        % Initilization function
+            % Initilization function
              obj.name = name;
         end
         
         function obj = checkLoc(obj,action)                            
-        % Used in mask Initialization.
-        % Checks if location is set and outputs a warning or error.
+            % Checks if location is set and outputs a warning or error.
+            % Used in mask Initialization.
             switch action
               case 'W'
                 if obj.loc == 999 % Because "Allow library block to modify its content" is selected in block's mask initialization, this command runs twice, but warnings cannot be displayed during the first initialization. 
@@ -57,8 +64,55 @@ classdef ptoClass<handle
             end
         end
         
+        function obj = setOrientation(obj)
+            % Sets orientation based on user input
+            obj.orientation.z = obj.orientation.z / norm(obj.orientation.z);
+            obj.orientation.y = obj.orientation.y / norm(obj.orientation.y);
+            z = obj.orientation.z;
+            y = obj.orientation.y;
+            if abs(dot(y,z))>0.001
+                error('The Y and Z vectors defining the constraint''s orientation must be orthogonal.')
+            end
+            x = cross(y,z)/norm(cross(y,z));
+            obj.orientation.x = x;
+            obj.orientation.rotationMatrix  = [x',y',z'];
+        end
+
+        function setInitDisp(obj, x_rot, ax_rot, ang_rot, addLinDisp)
+            % Function to set the initial displacement when having initial rotation
+            % x_rot: rotation point
+            % ax_rot: axis about which to rotate (must be a normal vector)
+            % ang_rot: rotation angle in radians
+            % addLinDisp: initial linear displacement (in addition to the displacement caused by rotation)
+            loc = obj.loc;
+            relCoord = loc - x_rot;
+            rotatedRelCoord = obj.rotateXYZ(relCoord,ax_rot,ang_rot);
+            newCoord = rotatedRelCoord + x_rot;
+            linDisp = newCoord-loc;
+            obj.initDisp.initLinDisp= linDisp + addLinDisp; 
+        end
+
+        function xn = rotateXYZ(obj,x,ax,t)
+            % Function to rotate a point about an arbitrary axis
+            % x: 3-componenet coordiantes
+            % ax: axis about which to rotate (must be a normal vector)
+            % t: rotation angle
+            % xn: new coordinates after rotation
+            rotMat = zeros(3);
+            rotMat(1,1) = ax(1)*ax(1)*(1-cos(t))    + cos(t);
+            rotMat(1,2) = ax(2)*ax(1)*(1-cos(t))    + ax(3)*sin(t);
+            rotMat(1,3) = ax(3)*ax(1)*(1-cos(t))    - ax(2)*sin(t);
+            rotMat(2,1) = ax(1)*ax(2)*(1-cos(t))    - ax(3)*sin(t);
+            rotMat(2,2) = ax(2)*ax(2)*(1-cos(t))    + cos(t);
+            rotMat(2,3) = ax(3)*ax(2)*(1-cos(t))    + ax(1)*sin(t);
+            rotMat(3,1) = ax(1)*ax(3)*(1-cos(t))    + ax(2)*sin(t);
+            rotMat(3,2) = ax(2)*ax(3)*(1-cos(t))    - ax(1)*sin(t);
+            rotMat(3,3) = ax(3)*ax(3)*(1-cos(t))    + cos(t);
+            xn = x*rotMat;
+        end
+
         function listInfo(obj)                                         
-        % List PTO info
+            % List PTO info
             fprintf('\n\t***** PTO Name: %s *****\n',obj.name)
             fprintf('\tPTO Stiffness           (N/m;Nm/rad) = %G\n',obj.k)
             fprintf('\tPTO Damping           (Ns/m;Nsm/rad) = %G\n',obj.c)
